@@ -3,19 +3,34 @@ clear;
 close all;
 
 % sample x<-->programmer salary   y<-->alogrithm programmer salary
-x = [1.3854; 1.2213; 1.1009; 1.0655; 0.09503];
+x = [1.3854; 1.2213; 1.1009; 1.0655; 0.9503];
 y = [2.1332; 2.0162; 1.9138; 1.8621; 1.8016];
 
 a = 0;
 b = 0;
-n = 5;
-y_hat = a*x + b*ones(n,1);
-
+i = 0;
+n = 5;   % sample number
+iterationNum = 100000;  % iteration number
+J = costFunction(a, b, x, y);
+while(i <= iterationNum)
+	tempJ = J;
+	[a, b] = optimizationMethod(a, b, x, y);
+	J = costFunction(a, b, x, y);
+	if(tempJ < J)
+		break;
+    end
+	i = i+1;
+end
+y_hat = oneElementRegressionModel(a, b, x);
+scatter(x, y);
+hold on;
+plot(x, y_hat);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 function y_hat = oneElementRegressionModel(a, b, x)
     % y_hat=a*x+b   x(5,1)<->vector a,b<->scalar
-    y_hat=a*x+b;
+	n = 5;
+    y_hat=a*x+b*ones(n,1);
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
